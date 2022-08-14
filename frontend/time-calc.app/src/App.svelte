@@ -1,5 +1,5 @@
-<script>
-  import TimeCalc from "./TimeCacl.svelte";
+<script lang="ts">
+  import TimeCalc from "./lib/TimeCacl.svelte";
 </script>
 
 <main><TimeCalc /></main>
