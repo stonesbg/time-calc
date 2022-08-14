@@ -33,10 +33,9 @@ builder.Services.AddCors(options =>
 			policy =>
 			{
 				policy
-							//.WithOrigins("http://localhost:3000")
-							.AllowAnyOrigin()
-							.WithMethods("Post")
-							.AllowAnyHeader();
+					.AllowAnyOrigin()
+					.AllowAnyMethod()
+					.AllowAnyHeader();
 			});
 });
 
@@ -68,6 +67,8 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+
+app.UseCors("Allow Any");
 
 app.UseAuthorization();
 

@@ -1,15 +1,17 @@
 <script lang="ts">
+import CopyToClipboard from "./CopyToClipboard.svelte";
+
   let fromTime = "";
   let toTime = "";
   let operation = "plus";
 
-  import { fetch } from "@tauri-apps/api/http";
+  let result = "";
 
   function sendCalc() {
     fetch(
       `http://localhost:5050/calc?FromTime=${fromTime}&ToTime=${toTime}&Operation=${operation}`,
       {
-        method: "post",
+        method: "POST",
         mode: "cors",
         headers: {
           "Content-Type": "application/json",
@@ -17,11 +19,11 @@
         },
       }
     )
-      .then((response) => {
-        if (response.ok) {
-          alert("the call works ok");
-        }
-      })
+    .then(function(response) {
+    return response.text();
+    }).then(function(data) {
+      result = data
+    })
       .catch(function (error) {
         console.log("Request failed", error);
       });
@@ -39,5 +41,19 @@
 <input bind:value={fromTime} />
 <button on:click={toggleOperation}>{operation}</button>
 <input bind:value={toTime} />
+
+{#if result != ""}
+<CopyToClipboard
+      clipText={result}
+      let:copy
+    >
+  <span class="h1">{result}</span>
+  <button
+      disabled={result.length === 0}
+      id="button-copy"
+      on:click={copy}
+    >📋</button>
+</CopyToClipboard>
+{/if}
 
 <button on:click={sendCalc}>Calc</button>
